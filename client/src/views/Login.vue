@@ -5,15 +5,15 @@
     </div>
     <div class="login-form">
       <div class="login-form-email">
-        <input class="email" type="text" placeholder="Email address">
+        <input v-model="username" class="email" type="text" placeholder="Username">
         <img class="email-icon" src='@/assets/email.svg' alt="">
       </div>
       <div class="login-form-password">
-        <input class="password" type="password" placeholder="Password">
+        <input v-model="password" class="password" type="password" placeholder="Password">
         <img class="password-icon" src="@/assets/email.svg" alt="">
       </div>
       <div>
-        <button>Login</button>
+        <button @click="(event) => login()">Login</button>
       </div>
       <div class="sign-up-text">
         <p>Don't have account? <a href="/register">Sign up</a></p>
@@ -23,10 +23,33 @@
 </template>
 
 <script>
+import axios from 'axios';
 
 export default {
-  name: "view-login"
-}
+  name: "view-login",
+  data() {
+    return {
+      username: "",
+      password: "",
+    }
+  },
+  methods: {
+    login() {
+      axios.defaults.headers.common["Authorization"] = "";
+      axios
+        .post("/api/v1/token/login", {
+          username: this.username,
+          password: this.password,
+        })
+        .then(res => {
+          console.log(res);
+        })
+        .catch(error => {
+          this.errors = error.response.data;
+        });
+    },
+  },
+};
 
 </script>
 

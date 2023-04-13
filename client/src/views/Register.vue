@@ -1,36 +1,91 @@
 <template>
-    <div class="login-content">
-      <div>
-        <h1>Create your account</h1>
+  <div class="login-content">
+    <div>
+      <h1>Create your account</h1>
+    </div>
+    <div class="login-form">
+      <div class="login-form-email">
+        <input
+          v-model="username"
+          class="email"
+          type="text"
+          placeholder="Username"
+        />
+        <img
+          class="email-icon"
+          src='@/assets/email.svg'
+          alt="email"
+        />
       </div>
-      <div class="login-form">
-        <div class="login-form-email">
-          <input class="email" type="text" placeholder="Email address">
-          <img class="email-icon" src='@/assets/email.svg' alt="">
-        </div>
-        <div class="login-form-password">
-          <input class="password" type="password" placeholder="Password">
-          <img class="password-icon" src="@/assets/email.svg" alt="">
-        </div>
-        <div class="login-form-password">
-          <input class="password1" type="password" placeholder="Confirm Password">
-          <img class="password-icon" src="@/assets/email.svg" alt="">
-        </div>
-        <div>
-          <button>Register</button>
-        </div>
-        <div class="sign-up-text">
-          <p>Already have an account? <a href="/login">Log in</a></p>
-        </div>
+      <div class="login-form-password">
+        <input
+          v-model="password"
+          class="password"
+          type="password"
+          placeholder="Password"
+        />
+        <img
+          class="password-icon"
+          src="@/assets/email.svg"
+          alt=""
+        />
+      </div>
+      <div class="login-form-password">
+        <input
+          v-model="re_password"
+          class="password1"
+          type="password"
+          placeholder="Confirm Password"
+        >
+        <img
+          class="password-icon"
+          src="@/assets/email.svg"
+          alt=""
+        />
+      </div>
+      <div>
+        <button @click="(event) => register()">Register</button>
+      </div>
+      <div class="sign-up-text">
+        <p>Already have an account? <a href="/login">Log in</a></p>
       </div>
     </div>
-  </template>
+  </div>
+</template>
 
 <script>
+import axios from 'axios';
 
 export default {
-    name: "view-register"
+  name: "view-register",
+  data() {
+    return {
+      username: "",
+      password: "",
+      re_password: "",
+      errors: {},
+    }
+  },
+  methods: {
+    register() {
+      axios
+        .post("/api/v1/users", {
+          username: this.username,
+          password: this.password,
+          re_password: this.re_password,
+        })
+        .then((res) => {
+          console.log(res);
+          this.$router.push("/login");
+        })
+        .catch(error => {
+          this.errors = error.response.data;
+          console.log(this.errors);
+        })
+    }
+  }
 }
+
 </script>
 
 <style scoped>
@@ -119,7 +174,7 @@ export default {
   left: 24px;
 }
 
-.sign-up-text > p > a {
+.sign-up-text>p>a {
   text-decoration: none;
   color: #FF4C4A;
 }
