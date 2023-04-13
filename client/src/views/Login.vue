@@ -16,7 +16,7 @@
         <button>Login</button>
       </div>
       <div class="sign-up-text">
-        <p>Don't have account? <a href="">Sign up</a></p>
+        <p>Don't have account? <a href="/register">Sign up</a></p>
       </div>
     </div>
   </div>
@@ -30,7 +30,7 @@ export default {
 
 </script>
 
-<style>
+<style scoped>
 .login-content {
   margin-left: auto;
   margin-right: auto;
